@@ -35,6 +35,28 @@ return {
             preset = "sidebar",
             preview = { main = true, enabled = false },
           },
+          win = {
+            list = {
+              keys = {
+                ["<c-f>"] = {
+                  action = function(picker)
+                    local dir = picker:dir()
+                    picker:close()
+                    Snacks.picker.files({ cwd = dir })
+                  end,
+                  desc = "Find files in folder",
+                },
+                ["<c-r>"] = {
+                  action = function(picker)
+                    local dir = picker:dir()
+                    picker:close()
+                    Snacks.picker.grep({ cwd = dir })
+                  end,
+                  desc = "Grep in folder",
+                },
+              },
+            },
+          },
         },
       },
     },
