@@ -8,6 +8,7 @@ return {
       "nvim-treesitter/nvim-treesitter-textobjects",
       "windwp/nvim-ts-autotag",
     },
+    ---@type TSConfig
     opts = {
       ensure_installed = {
         "bash",
@@ -54,12 +55,7 @@ return {
       },
     },
     config = function(_, opts)
-      require("nvim-treesitter.configs").setup(opts)
-    end,
-    init = function()
-      vim.opt.foldmethod = "expr"
-      vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-      vim.opt.foldenable = false
+      require("nvim-treesitter").setup(opts)
     end,
   },
   {

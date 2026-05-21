@@ -19,6 +19,7 @@ return {
             "bashls",
             "html",
             "cssls",
+            "tailwindcss",
           },
           -- Automatically call vim.lsp.enable() for Mason-installed servers
           automatic_enable = true,
