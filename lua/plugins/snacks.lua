@@ -26,6 +26,18 @@ return {
     },
     picker = {
       enabled = true,
+      actions = {
+        explorer_find_files = function(picker)
+          local dir = picker:dir()
+          picker:close()
+          Snacks.picker.files({ cwd = dir })
+        end,
+        explorer_grep = function(picker)
+          local dir = picker:dir()
+          picker:close()
+          Snacks.picker.grep({ cwd = dir })
+        end,
+      },
       sources = {
         files = { hidden = true },
         grep = { hidden = true },
@@ -38,22 +50,8 @@ return {
           win = {
             list = {
               keys = {
-                ["<c-f>"] = {
-                  action = function(picker)
-                    local dir = picker:dir()
-                    picker:close()
-                    Snacks.picker.files({ cwd = dir })
-                  end,
-                  desc = "Find files in folder",
-                },
-                ["<c-r>"] = {
-                  action = function(picker)
-                    local dir = picker:dir()
-                    picker:close()
-                    Snacks.picker.grep({ cwd = dir })
-                  end,
-                  desc = "Grep in folder",
-                },
+                ["<c-f>"] = "explorer_find_files",
+                ["<c-r>"] = "explorer_grep",
               },
             },
           },
