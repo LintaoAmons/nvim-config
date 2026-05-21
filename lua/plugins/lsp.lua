@@ -6,6 +6,22 @@ return {
       -- Mason: portable package manager for LSP servers, linters, formatters
       { "mason-org/mason.nvim", opts = {} },
       {
+        "WhoIsSethDaniel/mason-tool-installer.nvim",
+        opts = {
+          ensure_installed = {
+            -- Formatters
+            "goimports",
+            "gofumpt",
+            "prettierd",
+            "prettier",
+            "stylua",
+            "ruff",
+            "shfmt",
+            "jq",
+          },
+        },
+      },
+      {
         "mason-org/mason-lspconfig.nvim",
         opts = {
           -- Servers to auto-install via Mason
