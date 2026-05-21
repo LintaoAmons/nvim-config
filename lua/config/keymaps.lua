@@ -32,6 +32,31 @@ map("n", "<C-M-h>", "<cmd>vertical resize -5<cr>", { desc = "Decrease width" })
 map("n", "<C-M-j>", "<cmd>resize -5<cr>", { desc = "Decrease height" })
 map("n", "<C-M-k>", "<cmd>resize +5<cr>", { desc = "Increase height" })
 
+-- Go to containing method/function definition
+map("n", "gm", function()
+  local node = vim.treesitter.get_node({ ignore_injections = false })
+  if not node then
+    vim.notify("Treesitter not available", vim.log.levels.WARN)
+    return
+  end
+  local function_types = {
+    "function_declaration", "method_declaration", "function_definition",
+    "func_literal", "arrow_function", "function_expression",
+    "method_definition", "function_item", "closure_expression",
+  }
+  local lookup = {}
+  for _, t in ipairs(function_types) do lookup[t] = true end
+  while node do
+    if lookup[node:type()] then
+      local row, col = node:start()
+      vim.api.nvim_win_set_cursor(0, { row + 1, col })
+      return
+    end
+    node = node:parent()
+  end
+  vim.notify("No containing function found", vim.log.levels.WARN)
+end, { desc = "Go to containing method/function" })
+
 -- Better navigation
 map("n", "j", "gj", { desc = "Move down wrapped lines" })
 map("n", "k", "gk", { desc = "Move up wrapped lines" })
