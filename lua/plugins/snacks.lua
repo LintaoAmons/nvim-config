@@ -75,10 +75,19 @@ return {
     -- Top Pickers & Explorer
     ---------------------------------------------------------------------------
     { "<leader><space>", function() Snacks.picker.smart() end, desc = "Smart Find Files" },
+    { "<C-p>",           function() Snacks.picker.smart() end, desc = "Smart Find Files" },
     { "<leader>,",       function() Snacks.picker.buffers() end, desc = "Buffers" },
     { "<leader>/",       function() Snacks.picker.grep() end, desc = "Grep" },
     { "<leader>:",       function() Snacks.picker.command_history() end, desc = "Command History" },
-    { "<leader>e",       function() Snacks.explorer() end, desc = "File Explorer" },
+    { "<leader>e",       function()
+      local explorer = Snacks.picker.get({ source = "explorer" })[1]
+      if explorer then
+        Snacks.explorer.reveal()
+        explorer:focus("list")
+      else
+        Snacks.explorer.reveal()
+      end
+    end, desc = "Explorer (reveal current file)" },
 
     ---------------------------------------------------------------------------
     -- Find
