@@ -1,26 +1,98 @@
 return {
-  "catppuccin/nvim",
-  name = "catppuccin",
-  lazy = false,
-  priority = 1000,
-  ---@type CatppuccinOptions
-  opts = {
-    flavour = "mocha",
-    background = { light = "latte", dark = "mocha" },
-    default_integrations = true,
-    integrations = {
-      blink_cmp = true,
-      flash = true,
-      gitsigns = true,
-      mason = true,
-      mini = { enabled = true },
-      noice = true,
-      snacks = true,
-      which_key = true,
+  {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    lazy = false,
+    priority = 1000,
+    ---@type CatppuccinOptions
+    opts = {
+      flavour = "mocha",
+      background = { light = "latte", dark = "mocha" },
+      default_integrations = true,
+      color_overrides = {
+        mocha = {
+          rosewater = "#ea6962",
+          flamingo = "#ea6962",
+          red = "#ea6962",
+          maroon = "#ea6962",
+          pink = "#d3869b",
+          mauve = "#d3869b",
+          peach = "#e78a4e",
+          yellow = "#d8a657",
+          green = "#a9b665",
+          teal = "#89b482",
+          sky = "#89b482",
+          sapphire = "#89b482",
+          blue = "#7daea3",
+          lavender = "#7daea3",
+          text = "#ebdbb2",
+          subtext1 = "#d5c4a1",
+          subtext0 = "#bdae93",
+          overlay2 = "#a89984",
+          overlay1 = "#928374",
+          overlay0 = "#595959",
+          surface2 = "#4d4d4d",
+          surface1 = "#404040",
+          surface0 = "#292929",
+          base = "#1d2021",
+          mantle = "#191b1c",
+          crust = "#141617",
+        },
+      },
+      highlight_overrides = {
+        all = function(colors)
+          return {
+            Visual = { bg = "#BB4747", fg = "white" },
+            CurSearch = { bg = colors.rosewater },
+            IncSearch = { bg = colors.rosewater },
+            CursorLine = { bg = "#261F1E" },
+            CursorLineNr = { fg = colors.text },
+            LineNr = { fg = colors.overlay0 },
+            WinSeparator = { fg = colors.overlay0, style = { "bold" } },
+            FloatBorder = { bg = colors.base, fg = colors.surface0 },
+            NormalFloat = { bg = colors.base },
+            TreesitterContext = { bg = "#2A1E39" },
+            TreesitterContextBottom = { style = {} },
+            GitSignsChange = { fg = colors.peach },
+
+            Conditional = { fg = colors.red },
+            Repeat = { fg = colors.red },
+            Keyword = { fg = colors.red },
+            Exception = { fg = colors.red },
+            Statement = { fg = colors.red },
+            Type = { fg = colors.yellow, style = { "bold" } },
+            Function = { fg = colors.green, style = { "bold" } },
+            Operator = { fg = colors.peach },
+            Structure = { fg = colors.peach },
+            Tag = { fg = colors.peach },
+            Special = { fg = colors.yellow },
+          }
+        end,
+      },
+      integrations = {
+        blink_cmp = true,
+        flash = true,
+        gitsigns = true,
+        mason = true,
+        mini = { enabled = true },
+        noice = true,
+        snacks = true,
+        which_key = true,
+      },
+      dim_inactive = {
+        enabled = true,
+        shade = "light",
+        percentage = 0.5,
+      },
     },
+    config = function(_, opts)
+      require("catppuccin").setup(opts)
+      vim.cmd.colorscheme("catppuccin")
+    end,
   },
-  config = function(_, opts)
-    require("catppuccin").setup(opts)
-    vim.cmd.colorscheme("catppuccin")
-  end,
+  {
+    "rebelot/kanagawa.nvim",
+    lazy = true,
+    opts = { theme = "dragon" },
+  },
 }
