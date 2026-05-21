@@ -37,6 +37,33 @@ return {
           picker:close()
           Snacks.picker.grep({ cwd = dir })
         end,
+        explorer_yank_path = function(_, item)
+          if item then
+            vim.fn.setreg("+", item.file)
+            Snacks.notify("Copied: " .. item.file)
+          end
+        end,
+        explorer_yank_name = function(_, item)
+          if item then
+            local name = vim.fn.fnamemodify(item.file, ":t")
+            vim.fn.setreg("+", name)
+            Snacks.notify("Copied: " .. name)
+          end
+        end,
+        explorer_yank_relative = function(picker, item)
+          if item then
+            local rel = vim.fn.fnamemodify(item.file, ":." )
+            vim.fn.setreg("+", rel)
+            Snacks.notify("Copied: " .. rel)
+          end
+        end,
+        explorer_yank_dir = function(_, item)
+          if item then
+            local dir = vim.fn.fnamemodify(item.file, ":h")
+            vim.fn.setreg("+", dir)
+            Snacks.notify("Copied: " .. dir)
+          end
+        end,
       },
       sources = {
         files = { hidden = true },
@@ -52,6 +79,7 @@ return {
               keys = {
                 ["<c-f>"] = "explorer_find_files",
                 ["<c-r>"] = "explorer_grep",
+                ["Y"] = "explorer_yank_path",
               },
             },
           },
