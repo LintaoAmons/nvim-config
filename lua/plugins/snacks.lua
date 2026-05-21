@@ -39,8 +39,8 @@ return {
       },
     },
     explorer = { enabled = true },
-    dashboard = { enabled = true },
-    scroll = { enabled = true },
+    dashboard = { enabled = false },
+    scroll = { enabled = false },
     image = {
       enabled = true,
       -- Requires a terminal that supports Kitty graphics protocol
