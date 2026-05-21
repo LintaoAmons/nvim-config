@@ -162,10 +162,10 @@ return {
           map("n", "gK", vim.lsp.buf.signature_help, "Signature Help")
           map("i", "<C-k>", vim.lsp.buf.signature_help, "Signature Help")
 
-          -- Workspace
-          map("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, "Add Workspace Folder")
-          map("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, "Remove Workspace Folder")
-          map("n", "<leader>wl", function()
+          -- Workspace (using <leader>lw* to avoid conflict with window splits)
+          map("n", "<leader>lwa", vim.lsp.buf.add_workspace_folder, "Add Workspace Folder")
+          map("n", "<leader>lwr", vim.lsp.buf.remove_workspace_folder, "Remove Workspace Folder")
+          map("n", "<leader>lwl", function()
             vim.print(vim.lsp.buf.list_workspace_folders())
           end, "List Workspace Folders")
 
