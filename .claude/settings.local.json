@@ -1,0 +1,55 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.undercontrol/hooks/workspace-status-update.sh SESSION_START"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.undercontrol/hooks/workspace-status-update.sh RUNNING"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.undercontrol/hooks/workspace-status-update.sh AWAITING_INPUT"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "elicitation_dialog|permission_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.undercontrol/hooks/workspace-status-update.sh AWAITING_INPUT"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.undercontrol/hooks/workspace-status-update.sh IDLE"
+          }
+        ]
+      }
+    ]
+  }
+}

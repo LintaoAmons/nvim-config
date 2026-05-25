@@ -70,6 +70,7 @@ return {
         grep = { hidden = true },
         explorer = {
           hidden = true,
+          ignored = true,
           layout = {
             preset = "sidebar",
             preview = { main = true, enabled = false },
