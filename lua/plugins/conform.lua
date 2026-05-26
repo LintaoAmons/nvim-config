@@ -39,6 +39,21 @@ return {
       sql = { "sql_formatter" },
       xml = { "prettier" },
     },
+    formatters = {
+      sql_formatter = {
+        prepend_args = {
+          "--config",
+          vim.json.encode({
+            keywordCase = "upper",
+            dataTypeCase = "upper",
+            functionCase = "upper",
+            denseOperators = true,
+            newlineBeforeSemicolon = false,
+            indentStyle = "tabularLeft",
+          }),
+        },
+      },
+    },
   },
   init = function()
     vim.api.nvim_create_user_command("Format", function(args)

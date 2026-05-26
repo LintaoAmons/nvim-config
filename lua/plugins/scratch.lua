@@ -3,6 +3,7 @@ return {
   -- dir = "/Volumes/t7ex/Documents/oatnil/scratch.nvim",
   config = function()
     require("scratch").setup({
+      file_picker = "snacks",
       filetype_details = {
         go = {
           subdir = true,
