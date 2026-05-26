@@ -1,5 +1,6 @@
 return {
   "LintaoAmons/bookmarks.nvim",
+  dir = "/Volumes/t7ex/Documents/oatnil/vim/bookmarks.nvim",
   event = "VeryLazy",
   dependencies = {
     { "kkharji/sqlite.lua" },
@@ -33,6 +34,8 @@ return {
     { "ms", "<cmd>BookmarksInfoCurrentBookmark<cr>", desc = "Current bookmark info" },
     { "mj", "<cmd>BookmarksGotoNext<cr>", desc = "Next bookmark" },
     { "mk", "<cmd>BookmarksGotoPrev<cr>", desc = "Prev bookmark" },
+    { "md", "<cmd>BookmarksDesc<cr>", desc = "Attach description" },
+    { "mi", "<cmd>BookmarksInfoCurrentBookmark<cr>", desc = "Bookmark info" },
     { "mt", "<cmd>BookmarksTree<cr>", desc = "Bookmarks tree" },
   },
 }
