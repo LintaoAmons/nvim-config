@@ -36,6 +36,7 @@ return {
       python = { "ruff_format" },
       sh = { "shfmt" },
       bash = { "shfmt" },
+      sql = { "sql_formatter" },
       xml = { "prettier" },
     },
   },
