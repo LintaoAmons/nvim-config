@@ -4,6 +4,7 @@ return {
   config = function()
     require("scratch").setup({
       file_picker = "snacks",
+      filetypes = { "lua", "js", "ts", "go", "py", "sh", "sql", "json", "md", "txt", "http", "html" },
       filetype_details = {
         go = {
           subdir = true,
