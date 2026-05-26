@@ -18,7 +18,7 @@ return {
             "ruff",
             "shfmt",
             "jq",
-            "sql-formatter",
+            "sleek",
           },
         },
       },

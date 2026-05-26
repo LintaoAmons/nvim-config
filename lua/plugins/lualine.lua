@@ -58,6 +58,22 @@ return {
             return mode == "v" or mode == "V" or mode == "\22"
           end,
         },
+        {
+          function()
+            local formatters = require("conform").list_formatters_to_run(0)
+            if #formatters == 0 then
+              return ""
+            end
+            local names = {}
+            for _, f in ipairs(formatters) do
+              table.insert(names, f.name)
+            end
+            return " " .. table.concat(names, ", ")
+          end,
+          cond = function()
+            return package.loaded["conform"] ~= nil
+          end,
+        },
         "encoding",
         "fileformat",
         "filetype",

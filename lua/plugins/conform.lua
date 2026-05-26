@@ -36,23 +36,8 @@ return {
       python = { "ruff_format" },
       sh = { "shfmt" },
       bash = { "shfmt" },
-      sql = { "sql_formatter" },
+      sql = { "sleek" },
       xml = { "prettier" },
-    },
-    formatters = {
-      sql_formatter = {
-        prepend_args = {
-          "--config",
-          vim.json.encode({
-            keywordCase = "upper",
-            dataTypeCase = "upper",
-            functionCase = "upper",
-            denseOperators = true,
-            newlineBeforeSemicolon = false,
-            indentStyle = "tabularLeft",
-          }),
-        },
-      },
     },
   },
   init = function()
