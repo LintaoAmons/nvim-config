@@ -1,6 +1,5 @@
 return {
   "LintaoAmons/bookmarks.nvim",
-  dir = "/Volumes/t7ex/Documents/oatnil/vim/bookmarks.nvim",
   event = "VeryLazy",
   dependencies = {
     { "kkharji/sqlite.lua" },
