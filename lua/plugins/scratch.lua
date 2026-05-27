@@ -21,8 +21,8 @@ return {
   end,
   event = "VeryLazy",
   keys = {
-    { "<leader>no", "<cmd>Scratch<cr>", desc = "New Scratch File" },
-    { "<leader>nO", "<cmd>ScratchOpen<cr>", desc = "Open Scratch File" },
+    { "<leader>nn", "<cmd>Scratch<cr>", desc = "New Scratch File" },
+    { "<leader>no", "<cmd>ScratchOpen<cr>", desc = "Open Scratch File" },
     { "<leader>nf", "<cmd>ScratchOpenFzf<cr>", desc = "Find Scratch File" },
     { "<leader>nN", "<cmd>ScratchWithName<cr>", desc = "New Named Scratch" },
   },
