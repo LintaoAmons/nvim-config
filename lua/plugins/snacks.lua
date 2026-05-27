@@ -64,6 +64,11 @@ return {
             Snacks.notify("Copied: " .. dir)
           end
         end,
+        explorer_reveal_in_finder = function(_, item)
+          if item then
+            vim.system({ "open", "-R", item.file })
+          end
+        end,
       },
       sources = {
         files = { hidden = true },
@@ -81,6 +86,7 @@ return {
                 ["<c-f>"] = "explorer_find_files",
                 ["<c-r>"] = "explorer_grep",
                 ["Y"] = "explorer_yank_path",
+                ["gx"] = "explorer_reveal_in_finder",
               },
             },
           },
