@@ -64,5 +64,77 @@ map("n", "k", "gk", { desc = "Move up wrapped lines" })
 -- Better paste in visual mode
 map("v", "p", "P", { desc = "Paste without overwriting register" })
 
+-- Remove comments from selected lines
+map("v", "<leader>cR", function()
+  local start_line = vim.fn.line("v")
+  local end_line = vim.fn.line(".")
+  if start_line > end_line then start_line, end_line = end_line, start_line end
+
+  local buf = vim.api.nvim_get_current_buf()
+  local parser = vim.treesitter.get_parser(buf)
+  if not parser then
+    vim.notify("Treesitter not available", vim.log.levels.WARN)
+    return
+  end
+  parser:parse()
+
+  -- Collect comment nodes that overlap the selected range (0-indexed)
+  local comments = {}
+  parser:for_each_tree(function(tree, lang_tree)
+    local query_ok, query = pcall(vim.treesitter.query.parse, lang_tree:lang(), "((comment) @c)")
+    if not query_ok then return end
+    for _, node in query:iter_captures(tree:root(), buf, start_line - 1, end_line) do
+      local sr, sc, er, ec = node:range()
+      table.insert(comments, { sr = sr, sc = sc, er = er, ec = ec })
+    end
+  end)
+
+  if #comments == 0 then
+    vim.notify("No comments found in selection", vim.log.levels.INFO)
+    return
+  end
+
+  -- Sort bottom-to-top, right-to-left so removals don't shift positions
+  table.sort(comments, function(a, b)
+    if a.sr ~= b.sr then return a.sr > b.sr end
+    return a.sc > b.sc
+  end)
+
+  -- Deduplicate (same node can appear from multiple trees)
+  local seen = {}
+  local unique = {}
+  for _, c in ipairs(comments) do
+    local key = c.sr .. ":" .. c.sc .. ":" .. c.er .. ":" .. c.ec
+    if not seen[key] then
+      seen[key] = true
+      table.insert(unique, c)
+    end
+  end
+
+  for _, c in ipairs(unique) do
+    local line_text = vim.api.nvim_buf_get_lines(buf, c.sr, c.sr + 1, false)[1] or ""
+    local before = line_text:sub(1, c.sc)
+    -- If the line is only whitespace before the comment, remove the whole line
+    if before:match("^%s*$") and c.sc == 0 or before:match("^%s+$") then
+      -- Remove entire lines covered by this comment
+      vim.api.nvim_buf_set_lines(buf, c.sr, c.er + 1, false, {})
+    else
+      -- Inline comment: remove from comment start to end, trim trailing whitespace
+      local new_line = before:gsub("%s+$", "")
+      if c.er == c.sr then
+        vim.api.nvim_buf_set_lines(buf, c.sr, c.sr + 1, false, { new_line })
+      else
+        -- Multi-line inline comment (rare): remove the comment span
+        local last_line = vim.api.nvim_buf_get_lines(buf, c.er, c.er + 1, false)[1] or ""
+        local after = last_line:sub(c.ec + 1)
+        vim.api.nvim_buf_set_lines(buf, c.sr, c.er + 1, false, { new_line .. after })
+      end
+    end
+  end
+
+  vim.cmd("normal! " .. vim.api.nvim_replace_termcodes("<Esc>", true, false, true))
+  vim.notify("Removed " .. #unique .. " comment(s)", vim.log.levels.INFO)
+end, { desc = "Remove comments in selection" })
+
 -- Exit insert mode
 map("i", "jk", "<ESC>", { desc = "Exit insert mode" })
