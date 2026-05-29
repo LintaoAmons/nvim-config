@@ -1,0 +1,8 @@
+[sqruff]
+max_line_length = 120
+
+[sqruff:rules:capitalisation.keywords]
+capitalisation_policy = upper
+
+[sqruff:rules:capitalisation.functions]
+extended_capitalisation_policy = upper

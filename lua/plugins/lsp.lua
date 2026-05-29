@@ -18,7 +18,7 @@ return {
             "ruff",
             "shfmt",
             "jq",
-            "sleek",
+            "sqruff",
           },
         },
       },
@@ -39,7 +39,9 @@ return {
             "tailwindcss",
           },
           -- Automatically call vim.lsp.enable() for Mason-installed servers
-          automatic_enable = true,
+          automatic_enable = {
+            exclude = { "sqruff" },
+          },
         },
       },
 

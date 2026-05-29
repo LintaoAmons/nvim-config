@@ -15,6 +15,11 @@ return {
   ---@module "conform"
   ---@type conform.setupOpts
   opts = {
+    formatters = {
+      sqruff = {
+        args = { "fix", "--config", vim.fn.stdpath("config") .. "/tool-config/.sqruff", "$FILENAME" },
+      },
+    },
     formatters_by_ft = {
       go = { "goimports", "gofumpt" },
       javascript = { "prettierd", "prettier", stop_after_first = true },
@@ -36,7 +41,7 @@ return {
       python = { "ruff_format" },
       sh = { "shfmt" },
       bash = { "shfmt" },
-      sql = { "sleek" },
+      sql = { "sqruff" },
       xml = { "prettier" },
     },
   },
