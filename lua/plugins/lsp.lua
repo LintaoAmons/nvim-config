@@ -28,7 +28,7 @@ return {
           -- Servers to auto-install via Mason
           ensure_installed = {
             "lua_ls",
-            "ts_ls",
+            "vtsls",
             "gopls",
             "pyright",
             "jsonls",
@@ -40,7 +40,7 @@ return {
           },
           -- Automatically call vim.lsp.enable() for Mason-installed servers
           automatic_enable = {
-            exclude = { "sqruff" },
+            exclude = { "sqruff", "ts_ls", "eslint" },
           },
         },
       },
@@ -111,6 +111,45 @@ return {
         },
       })
 
+      vim.lsp.config("vtsls", {
+        settings = {
+          vtsls = {
+            enableMoveToFileCodeAction = true,
+            autoUseWorkspaceTsdk = true,
+            experimental = {
+              maxInlayHintLength = 30,
+              completion = {
+                enableServerSideFuzzyMatch = true,
+              },
+            },
+          },
+          typescript = {
+            updateImportsOnFileMove = { enabled = "always" },
+            suggest = { completeFunctionCalls = true },
+            inlayHints = {
+              enumMemberValues = { enabled = true },
+              functionLikeReturnTypes = { enabled = true },
+              parameterNames = { enabled = "literals" },
+              parameterTypes = { enabled = true },
+              propertyDeclarationTypes = { enabled = true },
+              variableTypes = { enabled = false },
+            },
+          },
+          javascript = {
+            updateImportsOnFileMove = { enabled = "always" },
+            suggest = { completeFunctionCalls = true },
+            inlayHints = {
+              enumMemberValues = { enabled = true },
+              functionLikeReturnTypes = { enabled = true },
+              parameterNames = { enabled = "literals" },
+              parameterTypes = { enabled = true },
+              propertyDeclarationTypes = { enabled = true },
+              variableTypes = { enabled = false },
+            },
+          },
+        },
+      })
+
       ----------------------------------------------------------------------
       -- Servers NOT installed by Mason (manual install / system-provided).
       -- Configure + enable them explicitly.
@@ -172,8 +211,24 @@ return {
             vim.print(vim.lsp.buf.list_workspace_folders())
           end, "List Workspace Folders")
 
-          -- Toggle inlay hints (if supported)
+          -- vtsls-specific keymaps
           local client = vim.lsp.get_client_by_id(args.data.client_id)
+          if client and client.name == "vtsls" then
+            map("n", "<leader>cM", function()
+              vim.lsp.buf.code_action({ apply = true, context = { only = { "source.addMissingImports.ts" }, diagnostics = {} } })
+            end, "Add Missing Imports")
+            map("n", "<leader>cD", function()
+              vim.lsp.buf.code_action({ apply = true, context = { only = { "source.fixAll.ts" }, diagnostics = {} } })
+            end, "Fix All Diagnostics")
+            map("n", "<leader>cO", function()
+              vim.lsp.buf.code_action({ apply = true, context = { only = { "source.organizeImports.ts" }, diagnostics = {} } })
+            end, "Organize Imports")
+            map("n", "<leader>cU", function()
+              vim.lsp.buf.code_action({ apply = true, context = { only = { "source.removeUnused.ts" }, diagnostics = {} } })
+            end, "Remove Unused Imports")
+          end
+
+          -- Toggle inlay hints (if supported)
           if client and client:supports_method("textDocument/inlayHint") then
             map("n", "<leader>th", function()
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = args.buf }))
