@@ -85,6 +85,8 @@ return {
               keys = {
                 ["<c-f>"] = "explorer_find_files",
                 ["<c-r>"] = "explorer_grep",
+                ["<c-s>"] = "edit_split",
+                ["<c-v>"] = "edit_vsplit",
                 ["Y"] = "explorer_yank_path",
                 ["gx"] = "explorer_reveal_in_finder",
               },
@@ -112,7 +114,7 @@ return {
     -- scratch = { enabled = true },
     -- profiler = { enabled = true },
     -- animate = { enabled = true },
-    -- terminal = { enabled = true },
+    terminal = { enabled = true },
     -- toggle = { enabled = true },
     -- rename = { enabled = true },
     -- gitbrowse = { enabled = true },
@@ -215,6 +217,7 @@ return {
     ---------------------------------------------------------------------------
     { "<leader>z",  function() Snacks.zen() end, desc = "Toggle Zen Mode" },
     { "<leader>Z",  function() Snacks.zen.zoom() end, desc = "Toggle Zoom" },
+    { "<C-w>m",      function() Snacks.zen.zoom() end, desc = "Toggle Zoom", mode = { "n", "t" } },
     { "<leader>.",  function() Snacks.scratch() end, desc = "Toggle Scratch Buffer" },
     { "<leader>S",  function() Snacks.scratch.select() end, desc = "Select Scratch Buffer" },
     { "<leader>n",  function() Snacks.notifier.show_history() end, desc = "Notification History" },
