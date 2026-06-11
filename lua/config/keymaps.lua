@@ -164,11 +164,12 @@ end, { desc = "Send selection to terminal" })
 
 -- Terminal mode
 map("t", "<esc><esc>", "<c-\\><c-n>", { desc = "Exit terminal mode" })
+map("t", "<C-n>", "<c-\\><c-n>", { desc = "Exit terminal mode" })
 map("t", "<C-h>", "<cmd>wincmd h<cr>", { desc = "Go to left window" })
 map("t", "<C-j>", "<cmd>wincmd j<cr>", { desc = "Go to lower window" })
 map("t", "<C-k>", "<cmd>wincmd k<cr>", { desc = "Go to upper window" })
 map("t", "<C-l>", "<cmd>wincmd l<cr>", { desc = "Go to right window" })
-map("t", "<C-/>", "<cmd>close<cr>", { desc = "Hide terminal" })
+map("t", "<C-/>", function() Snacks.terminal.toggle() end, { desc = "Toggle terminal" })
 
 -- Exit insert mode
 map("i", "jk", "<ESC>", { desc = "Exit insert mode" })
