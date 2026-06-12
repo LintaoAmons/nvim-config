@@ -10,7 +10,7 @@ vim.keymap.set("v", "<localleader>cd", function()
 
   -- Find the last CTE name: matches "name AS" (case-insensitive)
   local last_cte
-  for name in text:gmatch("(%w+)%s+[Aa][Ss]%s*%(") do
+  for name in text:gmatch("([%w_]+)%s+[Aa][Ss]%s*%(") do
     last_cte = name
   end
 
