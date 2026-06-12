@@ -30,6 +30,10 @@ vim.keymap.set("v", "<localleader>cd", function()
 
   local query = text .. "\nSELECT * FROM " .. last_cte .. ";\n"
 
+  -- Copy to clipboard
+  vim.fn.setreg("+", query)
+  vim.notify("CTE debug query copied to clipboard", vim.log.levels.INFO)
+
   -- Open in a new split buffer
   vim.cmd("belowright new")
   local buf = vim.api.nvim_get_current_buf()
