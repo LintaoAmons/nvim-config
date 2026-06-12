@@ -73,6 +73,22 @@ return {
       sources = {
         files = { hidden = true },
         grep = { hidden = true },
+        git_log = {
+          confirm = function(picker, item)
+            if item then
+              picker:close()
+              Snacks.picker.git_diff({ commit = item.commit })
+            end
+          end,
+        },
+        git_log_line = {
+          confirm = function(picker, item)
+            if item then
+              picker:close()
+              Snacks.picker.git_diff({ commit = item.commit })
+            end
+          end,
+        },
         explorer = {
           hidden = true,
           ignored = true,
