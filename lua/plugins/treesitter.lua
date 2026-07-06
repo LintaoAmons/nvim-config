@@ -1,36 +1,38 @@
+-- Languages to keep installed. Explicit install replaces master's
+-- `ensure_installed`; the `main` branch has no ensure_installed option.
+local ensure = {
+  "bash", "css", "dockerfile", "go", "gomod", "gosum",
+  "html", "javascript", "json", "lua", "markdown",
+  "markdown_inline", "python", "regex", "ruby",
+  "terraform", "toml", "tsx", "typescript", "vim",
+  "vimdoc", "yaml",
+}
+
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    branch = "master", -- master branch for Neovim 0.11 compatibility
+    branch = "main", -- rewrite branch; requires Neovim 0.12+
+    lazy = false, -- main does not support lazy-loading
     build = ":TSUpdate",
-    event = { "BufReadPost", "BufNewFile" },
-    cmd = { "TSInstall", "TSUpdate" },
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter-textobjects",
-      "windwp/nvim-ts-autotag",
-    },
-    opts = {
-      ensure_installed = {
-        "bash", "css", "dockerfile", "go", "gomod", "gosum",
-        "html", "javascript", "json", "lua", "markdown",
-        "markdown_inline", "python", "regex", "ruby",
-        "terraform", "toml", "tsx", "typescript", "vim",
-        "vimdoc", "yaml",
-      },
-      auto_install = true,
-      highlight = { enable = true },
-      indent = { enable = true },
-      incremental_selection = {
-        enable = true,
-        keymaps = {
-          node_incremental = "v",
-          node_decremental = "V",
-        },
-      },
-    },
-    config = function(_, opts)
-      require("nvim-treesitter.configs").setup(opts)
+    config = function()
+      require("nvim-treesitter").install(ensure)
+
+      -- Enable highlighting + indentation per buffer. On `main`, highlight
+      -- is `vim.treesitter.start()` and indent is the plugin's indentexpr
+      -- (experimental) — both replace the old `highlight`/`indent` opts.
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function(ev)
+          if pcall(vim.treesitter.start, ev.buf) then
+            vim.bo[ev.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+          end
+        end,
+      })
     end,
+  },
+  {
+    "windwp/nvim-ts-autotag",
+    ft = { "html", "javascript", "typescript", "tsx", "jsx", "markdown", "xml" },
+    opts = {},
   },
   {
     "nvim-treesitter/nvim-treesitter-context",
