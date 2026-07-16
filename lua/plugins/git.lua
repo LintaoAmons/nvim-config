@@ -34,6 +34,9 @@ return {
     "lewis6991/gitsigns.nvim",
     event = "BufReadPost",
     opts = {
+      current_line_blame = true,
+      current_line_blame_opts = { delay = 300 },
+      current_line_blame_formatter = "<author>, <author_time:%Y-%m-%d> - <summary>",
       signs = {
         add = { text = "▎" },
         change = { text = "▎" },
@@ -53,6 +56,7 @@ return {
       { "<leader>ghu", function() require("gitsigns").undo_stage_hunk() end, desc = "Undo Stage Hunk" },
       { "<leader>ghd", function() require("gitsigns").diffthis() end, desc = "Diff This" },
       { "<leader>ghb", function() require("gitsigns").blame_line({ full = true }) end, desc = "Blame Line" },
+      { "<leader>ghB", function() require("gitsigns").toggle_current_line_blame() end, desc = "Toggle Line Blame" },
       { "<leader>ghp", function() require("gitsigns").preview_hunk_inline() end, desc = "Preview Hunk Inline" },
     },
   },
