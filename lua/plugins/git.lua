@@ -57,6 +57,7 @@ return {
       { "<leader>ghd", function() require("gitsigns").diffthis() end, desc = "Diff This" },
       { "<leader>ghb", function() require("gitsigns").blame_line({ full = true }) end, desc = "Blame Line" },
       { "<leader>ghB", function() require("gitsigns").toggle_current_line_blame() end, desc = "Toggle Line Blame" },
+      { "<leader>ghf", function() require("gitsigns").blame() end, desc = "Blame File (sidebar)" },
       { "<leader>ghp", function() require("gitsigns").preview_hunk_inline() end, desc = "Preview Hunk Inline" },
     },
   },
