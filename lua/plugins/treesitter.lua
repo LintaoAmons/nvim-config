@@ -2,7 +2,7 @@
 -- `ensure_installed`; the `main` branch has no ensure_installed option.
 local ensure = {
   "bash", "css", "dockerfile", "go", "gomod", "gosum",
-  "html", "javascript", "json", "lua", "markdown",
+  "html", "java", "javascript", "json", "lua", "markdown",
   "markdown_inline", "python", "regex", "ruby",
   "terraform", "toml", "tsx", "typescript", "vim",
   "vimdoc", "yaml",
