@@ -1,8 +1,13 @@
 return {
-  "LintaoAmons/context-menu.nvim",
+  -- "LintaoAmons/context-menu.nvim",
+  dir = "/Users/lintao/Documents/workspace/LintaoAmons/context-menu.nvim", -- local dev
+  name = "context-menu.nvim",
   event = "VeryLazy",
   config = function()
-    require("context-menu").setup({})
+    require("context-menu").setup({
+      picker = "menu", -- right-click style float; use "vim-ui" for vim.ui.select
+      modules = { "git" },
+    })
     require("context-menu").add_items({
       {
         order = 1,
@@ -68,7 +73,7 @@ return {
     })
   end,
   keys = {
-    { "<M-l>", function() require("context-menu.picker.vim-ui").select() end, mode = { "v", "n" }, desc = "Context Menu" },
-    { "<C-CR>", function() require("context-menu.picker.vim-ui").select() end, mode = { "v", "n" }, desc = "Context Menu" },
+    { "<M-l>", function() require("context-menu").open() end, mode = { "v", "n" }, desc = "Context Menu" },
+    { "<C-g>", function() require("context-menu").open() end, mode = { "v", "n" }, desc = "Context Menu" },
   },
 }
