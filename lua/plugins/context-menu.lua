@@ -1,7 +1,5 @@
 return {
-  -- "LintaoAmons/context-menu.nvim",
-  dir = "/Users/lintao/Documents/workspace/LintaoAmons/context-menu.nvim", -- local dev
-  name = "context-menu.nvim",
+  "LintaoAmons/context-menu.nvim",
   event = "VeryLazy",
   config = function()
     require("context-menu").setup({
