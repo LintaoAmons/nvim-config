@@ -1,3 +1,15 @@
+-- Helm templates are Go templates, not YAML: `{{- if .Values.x }}` is a genuine
+-- YAML syntax error, so yamlls floods `charts/*/templates/*.yaml` with false
+-- positives. Give those files their own filetype (`helm`) and keep yamlls off it
+-- (see `filetypes` on the yamlls config below); helm_ls handles them instead.
+--
+-- This runs at spec-import time (module body, not the plugin `config()`) on
+-- purpose: filetype detection happens on BufReadPost, which can fire before
+-- nvim-lspconfig is loaded. Registering it lazily would miss the first buffer.
+vim.filetype.add({
+  pattern = { [".*/templates/.*%.ya?ml"] = "helm" },
+})
+
 return {
   -- LSP configuration -- native Neovim 0.11+ approach
   {
@@ -33,6 +45,7 @@ return {
             "pyright",
             "jsonls",
             "yamlls",
+            "helm_ls",
             "bashls",
             "html",
             "cssls",
@@ -103,6 +116,10 @@ return {
       })
 
       vim.lsp.config("yamlls", {
+        -- Explicit list: the lspconfig default also claims `helm`-ish yaml files.
+        -- Pinning it to plain `yaml` keeps schema validation on real manifests
+        -- while leaving Helm templates (filetype `helm`) to helm_ls.
+        filetypes = { "yaml" },
         settings = {
           yaml = {
             schemaStore = { enable = false, url = "" },
