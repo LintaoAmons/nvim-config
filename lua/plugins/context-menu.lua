@@ -225,6 +225,30 @@ return {
         },
       },
 
+      -- Current-file history, merged into the git module's "Git" group (by
+      -- name, so it lands beside its "Project Histories :: Diffview" sibling and
+      -- follows that group's `X :: Provider` naming). `DiffviewFileHistory %`
+      -- logs the file behind the buffer, so `filter_func` hides the item on any
+      -- buffer where `%` has no backing file -- panels (buftype "nofile"/
+      -- "acwrite"), terminals ("terminal"), quickfix, unnamed scratch. `deps`
+      -- degrades to a notice if diffview is ever removed, matching the siblings.
+      {
+        name = "Git",
+        items = {
+          {
+            order = 1,
+            name = "File History :: Diffview",
+            filter_func = function(ctx)
+              return ctx.filename ~= "" and vim.bo[ctx.buffer].buftype == ""
+            end,
+            deps = { { "cmd:DiffviewFileHistory", msg = "diffview.nvim is required — install sindrets/diffview.nvim" } },
+            action = function()
+              vim.cmd("DiffviewFileHistory %")
+            end,
+          },
+        },
+      },
+
       -- Commands that only exist in diffview-plus, available from any buffer.
       -- `deps` keeps these degrading to a "not installed" notice rather than an
       -- error if the pin ever moves back to upstream sindrets/diffview.nvim,
