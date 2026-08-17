@@ -1,21 +1,32 @@
 {
   "hooks": {
-    "SessionStart": [
+    "Notification": [
       {
         "hooks": [
           {
-            "type": "command",
-            "command": "$HOME/.undercontrol/hooks/workspace-status-update.sh SESSION_START"
+            "command": "/Users/lintao/.undercontrol/hooks/ud-workspace-status.sh AWAITING_INPUT claude",
+            "type": "command"
+          }
+        ],
+        "matcher": "elicitation_dialog|permission_prompt"
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "command": "/Users/lintao/.undercontrol/hooks/ud-workspace-status.sh IDLE claude",
+            "type": "command"
           }
         ]
       }
     ],
-    "UserPromptSubmit": [
+    "SessionStart": [
       {
         "hooks": [
           {
-            "type": "command",
-            "command": "$HOME/.undercontrol/hooks/workspace-status-update.sh RUNNING"
+            "command": "/Users/lintao/.undercontrol/hooks/ud-workspace-status.sh SESSION_START claude",
+            "type": "command"
           }
         ]
       }
@@ -24,29 +35,18 @@
       {
         "hooks": [
           {
-            "type": "command",
-            "command": "$HOME/.undercontrol/hooks/workspace-status-update.sh AWAITING_INPUT"
+            "command": "/Users/lintao/.undercontrol/hooks/ud-workspace-status.sh STOP claude",
+            "type": "command"
           }
         ]
       }
     ],
-    "Notification": [
-      {
-        "matcher": "elicitation_dialog|permission_prompt",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.undercontrol/hooks/workspace-status-update.sh AWAITING_INPUT"
-          }
-        ]
-      }
-    ],
-    "SessionEnd": [
+    "UserPromptSubmit": [
       {
         "hooks": [
           {
-            "type": "command",
-            "command": "$HOME/.undercontrol/hooks/workspace-status-update.sh IDLE"
+            "command": "/Users/lintao/.undercontrol/hooks/ud-workspace-status.sh RUNNING claude",
+            "type": "command"
           }
         ]
       }
