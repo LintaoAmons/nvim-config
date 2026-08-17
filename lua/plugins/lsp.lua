@@ -89,6 +89,40 @@ return {
       -- Servers with no custom config just work via automatic_enable.
       ----------------------------------------------------------------------
       vim.lsp.config("lua_ls", {
+        -- lua_ls refuses to load a workspace as large as $HOME ("your workspace
+        -- is set to /Users/<you> ... refused to load this directory"): its big-
+        -- directory guard trips. That happens because the default root_markers
+        -- include `.git`, and $HOME here is itself a dotfiles git repo, so
+        -- opening a stray .lua file with cwd=$HOME walks the marker search up to
+        -- $HOME and hands the whole home tree to the server.
+        --
+        -- Resolve the root ourselves with the same markers, but when the only
+        -- match is $HOME (or nothing at all) call on_dir(nil): lua_ls then
+        -- attaches in single-file mode -- the lone file still gets analysis, no
+        -- runaway workspace scan. Real projects (a marker below $HOME) resolve
+        -- normally and are unaffected. Function form is authoritative: on_dir()
+        -- must be called or the server would not attach at all (see :h lsp-root_dir).
+        root_dir = function(bufnr, on_dir)
+          local home = vim.fs.normalize(vim.uv.os_homedir() or "")
+          local fname = vim.api.nvim_buf_get_name(bufnr)
+          local start = fname ~= "" and fname or (vim.uv.cwd() or "")
+          local root = vim.fs.root(start, {
+            ".luarc.json",
+            ".luarc.jsonc",
+            ".emmyrc.json",
+            ".luacheckrc",
+            ".stylua.toml",
+            "stylua.toml",
+            "selene.toml",
+            "selene.yml",
+            ".git",
+          })
+          if root and vim.fs.normalize(root) ~= home then
+            on_dir(root)
+          else
+            on_dir(nil)
+          end
+        end,
         settings = {
           Lua = {
             runtime = { version = "LuaJIT" },
