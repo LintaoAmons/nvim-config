@@ -1,6 +1,11 @@
 return {
   {
-    "sindrets/diffview.nvim",
+    -- Maintained fork of sindrets/diffview.nvim (upstream last commit 2024-06-13).
+    -- Fork's divergence point == the commit we were pinned to, so this is a pure
+    -- fast-forward, not a parallel branch. Pinned to tags because the fork ships
+    -- breaking changes every few releases -- upgrades stay a deliberate choice.
+    "dlyongemallo/diffview-plus.nvim",
+    version = "*",
     cmd = { "DiffviewOpen", "DiffviewFileHistory" },
     keys = {
       { "<leader>gdo", "<cmd>DiffviewOpen<cr>", desc = "Diffview Open" },
