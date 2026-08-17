@@ -181,6 +181,50 @@ return {
         action = diffview_action("open_commit_log_file"),
       },
 
+      -- CSV/TSV tabular view (csvview.nvim). The plugin ships no default keymap,
+      -- and its command names -- plus the `display_mode=` argument -- are exactly
+      -- the hard-to-recall kind this menu exists to surface. `ft` gates the whole
+      -- group to delimited buffers so it is invisible everywhere else; `deps`
+      -- degrades each item to a "not installed" notice if csvview is ever
+      -- removed -- same contract as the diffview entries. csvview lazy-loads on
+      -- the csv/tsv filetypes, so by the time this group is visible its commands
+      -- already exist.
+      {
+        order = 2,
+        name = "CSV",
+        ft = { "csv", "tsv" },
+        items = {
+          {
+            name = "Toggle Table View",
+            deps = { { "cmd:CsvViewToggle", msg = "requires csvview.nvim" } },
+            action = function()
+              vim.cmd("CsvViewToggle")
+            end,
+          },
+          {
+            name = "Table View: Bordered",
+            deps = { { "cmd:CsvViewEnable", msg = "requires csvview.nvim" } },
+            action = function()
+              vim.cmd("CsvViewEnable display_mode=border")
+            end,
+          },
+          {
+            name = "Table View: Highlight",
+            deps = { { "cmd:CsvViewEnable", msg = "requires csvview.nvim" } },
+            action = function()
+              vim.cmd("CsvViewEnable display_mode=highlight")
+            end,
+          },
+          {
+            name = "Disable Table View",
+            deps = { { "cmd:CsvViewDisable", msg = "requires csvview.nvim" } },
+            action = function()
+              vim.cmd("CsvViewDisable")
+            end,
+          },
+        },
+      },
+
       -- Commands that only exist in diffview-plus, available from any buffer.
       -- `deps` keeps these degrading to a "not installed" notice rather than an
       -- error if the pin ever moves back to upstream sindrets/diffview.nvim,

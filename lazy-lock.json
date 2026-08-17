@@ -6,6 +6,7 @@
   "cd-project.nvim": { "branch": "main", "commit": "8ad3d74dac6d01caa42a3bb8658d0872d0bf479c" },
   "conform.nvim": { "branch": "master", "commit": "016802de402556da54c36bd7359b441266b01cdd" },
   "context-menu.nvim": { "branch": "main", "commit": "0332ef5baaa4b08769d425fc3513a50e6e33fc95" },
+  "csvview.nvim": { "branch": "main", "commit": "5c22774c3ecc7f8883af5d143b366e45b1f0875d" },
   "diffview-plus.nvim": { "branch": "main", "commit": "1c095f26f268871a6ef06e5cc90f92573c725f95" },
   "dropbar.nvim": { "branch": "master", "commit": "808ba31cde89aec8833e9789f5e04557cd31c9e1" },
   "flash.nvim": { "branch": "main", "commit": "b6346946d10d07998efee029fb0f7a593806d0cd" },
