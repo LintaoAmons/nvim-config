@@ -34,6 +34,14 @@ return {
         },
       },
       lualine_x = {
+        -- Search count "[current/total]" for `/` `?` `*` `#` and `n`/`N`.
+        -- Root cause it fixes: options.lua sets cmdheight=0, which hides Neovim's
+        -- built-in `[1/5]` echo (it renders on the command line). laststatus=3 keeps
+        -- this global statusline always visible, so the count lives here instead —
+        -- no extra plugin, no keymap change. lualine redraws on cursor move, so the
+        -- number tracks `n`/`N`. Component uses vim.fn.searchcount() with lualine's
+        -- default maxcount/timeout guard for large buffers.
+        { "searchcount", icon = "" },
         {
           function()
             local mode = vim.fn.mode()
