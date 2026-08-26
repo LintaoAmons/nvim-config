@@ -6,9 +6,14 @@ Lintao's personal [Neovim](https://neovim.io/) configuration.
 - Plugin manager: [lazy.nvim](https://github.com/folke/lazy.nvim), bootstrapped in `init.lua`
 - LSP is wired with the native `vim.lsp.config()` / `vim.lsp.enable()` API — `lua/plugins/lsp.lua` calls it the "native Neovim 0.11+ approach"
 
-> **Content pending.** This page only lists what can be read straight out of the
-> repository. The actual documentation (what to use, how it is meant to be used)
-> is still to be written.
+## Guides
+
+- [Git](git.html) — every git key, picker and menu entry in this config, each
+  with a `file:line`, split into *written here* / *plugin default* / *no working
+  entry point*.
+
+> **The rest of this page is still an inventory**, not documentation: below is
+> only what can be read straight out of the repository.
 
 ## Repository layout
 
