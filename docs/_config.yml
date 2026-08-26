@@ -1,0 +1,7 @@
+# GitHub Pages config for LintaoAmons/nvim-config
+# Source: branch `main`, folder `/docs` (Deploy from a branch).
+# `jekyll-theme-cayman` is one of GitHub's built-in supported themes, so no
+# Gemfile / remote_theme / build step is needed.
+title: nvim-config
+description: Lintao's Neovim configuration
+theme: jekyll-theme-cayman
