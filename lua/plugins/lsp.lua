@@ -50,6 +50,7 @@ return {
             "html",
             "cssls",
             "tailwindcss",
+            "terraformls",
           },
           -- Automatically call vim.lsp.enable() for Mason-installed servers
           automatic_enable = {
