@@ -280,6 +280,58 @@ return {
           },
         },
       },
+
+      -- Yazi (yazi.nvim). Selection rule is the same one the Diffview group
+      -- above states: a slot is earned by a capability with no key of its own.
+      -- yazi.nvim exposes exactly four entry points (`lua/yazi/commands.lua:4-21`)
+      -- and `yazi.lua` already binds the plain one -- `<leader>E` -> `:Yazi`,
+      -- "open at the current file" -- so that one is deliberately NOT repeated
+      -- here. The two below have no key at all; `:Yazi logs` is a debugging aid,
+      -- not a menu item.
+      --
+      -- Only one location entry, not three: `cd-project.lua` `lcd`s to the
+      -- project root on every switch, so "project root" and "cwd" are the same
+      -- directory in this config -- a separate project-root item would be a
+      -- duplicate of this one.
+      --
+      -- Called through the lua API (`lua/yazi.lua:22,182`) rather than `:Yazi
+      -- cwd` / `:Yazi toggle`: yazi.nvim is lazy-loaded on `<leader>E` only, so
+      -- the user command does not exist until that key is pressed. `require`
+      -- goes through lazy.nvim's module loader and loads the plugin on demand,
+      -- which also makes `deps` report honestly instead of claiming a missing
+      -- plugin that is merely unloaded.
+      --
+      -- No `ft` gate, unlike the Diffview panel entries -- measured, not assumed:
+      -- yazi.nvim resolves a buffer whose name carries a non-`file://` URI
+      -- scheme to `getcwd()` itself (`lua/yazi/utils.lua:133-141`), so in a
+      -- `diffview:///panels/2/DiffviewFilePanel` buffer it opens at the project
+      -- directory rather than at a garbage path. "Open at CWD" never reads the
+      -- buffer name to begin with, and the sibling paths it passes along are
+      -- filtered to `buftype == "" and buflisted` (`utils.lua:451-457`), so
+      -- panels, terminals and quickfix can never leak in.
+      {
+        order = 21,
+        name = "Yazi",
+        items = {
+          {
+            name = "Open at CWD",
+            deps = { { "lua:yazi", msg = "requires yazi.nvim" } },
+            action = function()
+              require("yazi").yazi(nil, vim.fn.getcwd())
+            end,
+          },
+          {
+            -- `:Yazi toggle` under a name that says what it does: it reopens at
+            -- the file yazi last hovered (`lua/yazi.lua:182-198`), which is the
+            -- one thing `<leader>E` cannot do.
+            name = "Resume Last Session",
+            deps = { { "lua:yazi", msg = "requires yazi.nvim" } },
+            action = function()
+              require("yazi").toggle()
+            end,
+          },
+        },
+      },
     })
   end,
   keys = {
