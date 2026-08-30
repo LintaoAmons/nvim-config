@@ -231,6 +231,10 @@ return {
     ---------------------------------------------------------------------------
     -- Other
     ---------------------------------------------------------------------------
+    -- <C-w>o replaces the builtin :only. :only is destructive (the other windows are
+    -- gone for good); zen is a toggle, so a second press restores the original layout.
+    -- When you really want :only, the `:on<CR>` command is still there.
+    { "<C-w>o",     function() Snacks.zen() end, desc = "Toggle Zen Mode" },
     { "<leader>z",  function() Snacks.zen() end, desc = "Toggle Zen Mode" },
     { "<leader>Z",  function() Snacks.zen.zoom() end, desc = "Toggle Zoom" },
     { "<C-w>m",      function() Snacks.zen.zoom() end, desc = "Toggle Zoom", mode = { "n", "t" } },
