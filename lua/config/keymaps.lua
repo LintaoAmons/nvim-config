@@ -173,3 +173,56 @@ map("t", "<C-/>", function() Snacks.terminal.toggle() end, { desc = "Toggle term
 
 -- Exit insert mode
 map("i", "jk", "<ESC>", { desc = "Exit insert mode" })
+
+-- Duplicate the visual selection in place.
+--
+-- One rule covers all three visual modes: the copy is pasted at the END of the
+-- selection, so it always lands immediately alongside the original, whichever
+-- way the selection extends -- V below the last line, v right after the last
+-- character, <C-v> just right of the block (Vim pads short lines itself).
+-- Blockwise has to paste from the block's FIRST line at its right edge, since
+-- `> is the bottom-right corner and pasting there would stack the copy below
+-- the block instead of beside it.
+--
+-- 'clipboard' is unnamedplus (options.lua), so a bare `y` would wipe the system
+-- clipboard. Everything goes through register z, and z plus the unnamed register
+-- are restored afterwards. The paste is one buffer change, so a single `u`
+-- reverts the whole duplication.
+--
+-- The new copy is left selected in the same visual mode (via the `[ / `] marks
+-- the paste sets), so pressing the key again duplicates that copy: 1, 2, 3...
+-- A count pastes that many copies, matching plain `3p`.
+local function duplicate_selection()
+  local mode = vim.fn.mode()
+  if mode ~= "v" and mode ~= "V" and mode ~= "\22" then return end
+
+  local count = vim.v.count1
+  local reg_z = vim.fn.getreginfo("z")
+  local reg_unnamed = vim.fn.getreginfo('"')
+
+  vim.cmd('normal! "zy')
+
+  if mode == "\22" then
+    -- Vim orders '< and '> by line, not by column, so a block dragged up-and-right
+    -- leaves the RIGHT edge on '<. Take the max of the two to find it either way,
+    -- clamped to the top line since the cursor can't sit in virtual space here.
+    local line = vim.fn.line("'<")
+    local right = math.max(vim.fn.col("'<"), vim.fn.col("'>"))
+    local col = math.min(right, #vim.fn.getline(line) + 1)
+    vim.api.nvim_win_set_cursor(0, { line, math.max(col - 1, 0) })
+  else
+    vim.cmd("normal! `>")
+  end
+  vim.cmd('normal! "z' .. count .. "p")
+
+  vim.fn.setreg("z", reg_z)
+  -- The unnamed register is a pointer (getreginfo reports points_to), and "zy
+  -- re-points it at z. Writing the old contents back into whatever it pointed at
+  -- restores both the contents and the pointer; setreg('"', ...) would not, it
+  -- would just overwrite z again.
+  vim.fn.setreg(reg_unnamed.points_to or '"', reg_unnamed)
+
+  vim.cmd("normal! `[" .. mode .. "`]")
+end
+
+map("x", "<M-d>", duplicate_selection, { desc = "Duplicate selection" })
